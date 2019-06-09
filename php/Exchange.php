@@ -213,6 +213,7 @@ class Exchange {
         'vbtc',
         'virwox',
         'xbtce',
+        'xex',
         'yobit',
         'zaif',
         'zb',
