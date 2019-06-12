@@ -405,19 +405,29 @@ class xex (Exchange):
             if params:
                 url += '?' + self.urlencode(params)
         else:
+            unsigned = {}
+            if 'unsigned' in params :
+                unsigned = params["unsigned"]
+                del params['unsigned']
+
             self.check_required_credentials()
             time = self.nonce()
             query = self.keysort(self.extend({
                 'api_key': self.apiKey,
                 'auth_nonce': time,
             }, params))
+            print(query)
+
             temp_str = ''
             for key in query:
             	temp_str += str(query[key])
 
             signed = self.hash(self.encode(temp_str + self.secret))
             if method == 'GET':
-            	signed = self.hash(self.encode(self.apiKey + str(time) + self.secret))
+                signed = self.hash(self.encode(self.apiKey + str(time) + self.secret))
+            
+            if not unsigned:
+            	query = self.extend(query, unsigned)
 
             query_str = self.urlencode(query)
             url += '?' + query_str + '&auth_sign=' + signed;
