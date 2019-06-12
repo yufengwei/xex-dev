@@ -456,7 +456,6 @@ class xex extends Exchange {
             $url .= '?' . $query_str . '&auth_sign=' . $signed;
             $headers = array ( 'Content-Type' => 'application/json' );
         }
-        var_dump($url);
         return array ( 'url' => $url, 'method' => $method, 'body' => $body, 'headers' => $headers );
     }
 
