@@ -418,10 +418,7 @@ class xex extends Exchange {
         ), $params));
     }
 
-    public function sign ($path, $api = 'public', $method = 'GET', $params = array (), $headers = null, $body = null) {
-    	if(is_array ($params))
-    		$params = $params[0];
-    	
+    public function sign ($path, $api = 'public', $method = 'GET', $params = array (), $headers = null, $body = null) {    	
         if ($this->id === 'cryptocapital')
             throw new ExchangeError ($this->id . ' is an abstract base API for xex');
         $url = $this->urls['api'] . '/' . $path;
@@ -429,6 +426,13 @@ class xex extends Exchange {
             if ($params)
                 $url .= '?' . $this->urlencode ($params);
         } else {
+            $unsigned = array ();
+            if(array_key_exists('unsigned', $params))
+            {
+                $unsigned = $params['unsigned'];
+                $params = array_diff_key($params, array('unsigned' => $unsigned));
+            }
+            
             $this->check_required_credentials();
             $time = (string) $this->milliseconds ();
             $query = $this->keysort (array_merge ($params, array (
@@ -447,6 +451,7 @@ class xex extends Exchange {
             if($method === 'GET')
                 $signed = $this->hash($this->encode($this->apiKey . $time . $this->secret));
             
+            $query = array_merge($query, $unsigned);
             $query_str = $this->urlencode($query);
             $url .= '?' . $query_str . '&auth_sign=' . $signed;
             $headers = array ( 'Content-Type' => 'application/json' );
