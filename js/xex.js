@@ -462,6 +462,8 @@ await this.loadMarkets ();
             if (Object.keys (params).length)
                 url += '?' + this.urlencode (params);
         } else {
+            let unsigned = params["unsigned"];
+            delete params["unsigned"];
             this.checkRequiredCredentials ();
                let time = this.nonce();
                let query = this.keysort (this.extend ({
@@ -480,12 +482,11 @@ await this.loadMarkets ();
                {
                 signed = this.hash (this.encode(this.apiKey + time + this.secret));
                }
-               
+               query = this.extend(query, unsigned);
                let query_str = this.urlencode(query);
             url += '?' + query_str + '&auth_sign=' + signed;
             headers = { 'Content-Type': 'application/json' };
         }
-        console.log(url);
         return { 'url': url, 'method': method, 'body': body, 'headers': headers };
     }
 
