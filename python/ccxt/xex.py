@@ -44,7 +44,7 @@ class xex (Exchange):
             },
             'urls': {
                 'logo': 'https://www.crossexchange.io/images/logo_icon.png',
-                'api': 'https://api.xex-dev.com',
+                'api': 'https://api.crossexchange.io',
                 'www': 'https://www.crossexchange.io/cross/home',
                 'doc': 'https://support.crossexchange.io/hc/en-us/categories/360001030591?flash_digest=4496738595f09128fc199486ac8f0fcee028b0ab',
             },
